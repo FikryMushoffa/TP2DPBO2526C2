@@ -121,10 +121,10 @@ classDiagram
     direction BT
 
     class Video {
-        - id: String
-        - judul: String
-        - durasi: int
-        - tahunRilis: int
+        # id: String
+        # judul: String
+        # durasi: int
+        # tahunRilis: int
         + Video()
         + Video(id, judul, durasi, tahunRilis)
         + getId(): String
@@ -138,10 +138,10 @@ classDiagram
     }
 
     class Film {
-        - genre: String
-        - rating: float
-        - sutradara: String
-        - studioProduksi: String
+        # genre: String
+        # rating: float
+        # sutradara: String
+        # studioProduksi: String
         + Film()
         + Film(id, judul, durasi, tahunRilis, genre, rating, sutradara, studioProduksi)
         + getGenre(): String
@@ -180,14 +180,14 @@ classDiagram
 ## Penjelasan Atribut dan Methods Setiap Kelas
 
 ### 1. Kelas `Video` (Kelas Dasar / Base Class)
-Mendefinisikan entitas umum media rekaman audio-visual.
+Mendefinisikan entitas umum media rekaman audio-visual. Menggunakan hak akses `protected` agar atribut dapat diwariskan secara langsung ke kelas-kelas turunan di bawahnya (`Film` dan `FilmBioskop`).
 
 | No | Nama Atribut | Tipe Data | Akses | Keterangan |
 |:---:|:---|:---:|:---:|:---|
-| 1 | `id` | String | `private` | Kode/identitas unik pembeda antar video (misal: "V01") |
-| 2 | `judul` | String | `private` | Nama judul karya video |
-| 3 | `durasi` | int | `private` | Panjang durasi putar video dalam satuan menit |
-| 4 | `tahunRilis` | int | `private` | Tahun resmi karya video dirilis ke publik |
+| 1 | `id` | String | `protected` | Kode/identitas unik pembeda antar video (misal: "V01") |
+| 2 | `judul` | String | `protected` | Nama judul karya video |
+| 3 | `durasi` | int | `protected` | Panjang durasi putar video dalam satuan menit |
+| 4 | `tahunRilis` | int | `protected` | Tahun resmi karya video dirilis ke publik |
 
 **Methods:**
 - `Video()`: Konstruktor default untuk inisialisasi nilai awal kosong.
@@ -200,14 +200,14 @@ Mendefinisikan entitas umum media rekaman audio-visual.
 ---
 
 ### 2. Kelas `Film` (Kelas Turunan Tingkat 1 / Mewarisi `Video`)
-Menambahkan atribut dan perilaku spesifik karya sinematografi terstruktur.
+Menambahkan atribut dan perilaku spesifik karya sinematografi terstruktur. Atribut menggunakan hak akses `protected` agar dapat diakses dan diwariskan ke kelas turunan berikutnya (`FilmBioskop`).
 
 | No | Nama Atribut | Tipe Data | Akses | Keterangan |
 |:---:|:---|:---:|:---:|:---|
-| 1 | `genre` | String | `private` | Kategori tema atau aliran film (misal: "Action", "Sci-Fi", "Animasi") |
-| 2 | `rating` | float / double | `private` | Skor penilaian kualitas film dari skala 0.0 sampai 10.0 |
-| 3 | `sutradara` | String | `private` | Nama tokoh sutradara pengarah film |
-| 4 | `studioProduksi` | String | `private` | Nama perusahaan rumah produksi yang mendanai/membuat film |
+| 1 | `genre` | String | `protected` | Kategori tema atau aliran film (misal: "Action", "Sci-Fi", "Animasi") |
+| 2 | `rating` | float / double | `protected` | Skor penilaian kualitas film dari skala 0.0 sampai 10.0 |
+| 3 | `sutradara` | String | `protected` | Nama tokoh sutradara pengarah film |
+| 4 | `studioProduksi` | String | `protected` | Nama perusahaan rumah produksi yang mendanai/membuat film |
 
 **Methods:**
 - `Film()`: Konstruktor default memanggil konstruktor dasar.
@@ -220,7 +220,7 @@ Menambahkan atribut dan perilaku spesifik karya sinematografi terstruktur.
 ---
 
 ### 3. Kelas `FilmBioskop` (Kelas Turunan Tingkat 2 / Mewarisi `Film`)
-Menambahkan atribut spesifik untuk penayangan komersial bioskop layar lebar.
+Menambahkan atribut spesifik untuk penayangan komersial bioskop layar lebar. Atribut menggunakan hak akses `private` karena `FilmBioskop` merupakan kelas daun (*leaf class* / level terbawah dalam hierarki pewarisan).
 
 | No | Nama Atribut | Tipe Data | Akses | Keterangan |
 |:---:|:---|:---:|:---:|:---|
@@ -346,10 +346,12 @@ Katalog visual poster film yang disimpan di dalam direktori `PHP/images/`:
 
 ```bash
 cd CPP/
-g++ Video.cpp Film.cpp FilmBioskop.cpp main.cpp -o main
+g++ main.cpp -o main
 ./main
 ```
 
+> *Catatan: Cukup mengompilasi `main.cpp` karena seluruh file kelas (`FilmBioskop.cpp`, `Film.cpp`, dan `Video.cpp`) telah di-`#include` secara berantai.*
+>
 > **Menjalankan dengan testcase otomatis:**
 > ```bash
 > Get-Content file.txt | ./main
@@ -378,10 +380,12 @@ g++ Video.cpp Film.cpp FilmBioskop.cpp main.cpp -o main
 
 ```bash
 cd Java/
-javac Video.java Film.java FilmBioskop.java Main.java
+javac Main.java
 java Main
 ```
 
+> *Catatan: Cukup mengompilasi `Main.java` karena compiler Java (`javac`) secara otomatis mengompilasi seluruh kelas dependen (`Video.java`, `Film.java`, `FilmBioskop.java`) yang berada pada folder yang sama.*
+>
 > **Menjalankan dengan testcase otomatis:**
 > ```bash
 > Get-Content file.txt | java Main
